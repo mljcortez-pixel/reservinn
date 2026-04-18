@@ -1,0 +1,17 @@
+# Ignore uploads folder contents (but keep the folder)
+uploads/profiles/*
+uploads/resorts/*
+!uploads/profiles/.gitkeep
+!uploads/resorts/.gitkeep
+
+# Ignore sensitive files
+config.php
+.env
+
+# Ignore IDE files
+.vscode/
+.idea/
+
+# Ignore OS files
+.DS_Store
+Thumbs.db

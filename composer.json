@@ -1,0 +1,8 @@
+{
+  "name": "reservinn/booking-system",
+  "description": "Resort Booking System",
+  "type": "project",
+  "require": {
+    "php": ">=8.0"
+  }
+}
