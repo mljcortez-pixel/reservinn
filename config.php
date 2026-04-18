@@ -1,21 +1,12 @@
 <?php
 session_start();
 
-// Railway MySQL Connection Settings
-$db_host = getenv('MYSQL_HOST') ?: 'nozomi.proxy.rlwy.net';
-$db_port = getenv('MYSQL_PORT') ?: '16595';
-$db_name = getenv('MYSQL_DATABASE') ?: 'railway';
-$db_user = getenv('MYSQL_USER') ?: 'root';
-$db_pass = getenv('MYSQL_PASSWORD') ?: '';
-
-// Use environment variables if available (Railway sets these automatically)
-if (getenv('RAILWAY_ENVIRONMENT')) {
-    $db_host = getenv('MYSQL_HOST');
-    $db_port = getenv('MYSQL_PORT');
-    $db_name = getenv('MYSQL_DATABASE');
-    $db_user = getenv('MYSQL_USER');
-    $db_pass = getenv('MYSQL_PASSWORD');
-}
+// Railway MySQL Connection Settings - CORRECT variable names (no underscores!)
+$db_host = getenv('MYSQLHOST') ?: 'mysql.railway.internal';
+$db_port = getenv('MYSQLPORT') ?: '3306';
+$db_name = getenv('MYSQLDATABASE') ?: 'railway';
+$db_user = getenv('MYSQLUSER') ?: 'root';
+$db_pass = getenv('MYSQLPASSWORD') ?: 'IGjzdapOiUhQQhjISNOKSmdzGUAgsxwM';
 
 define('DB_HOST', $db_host . ':' . $db_port);
 define('DB_NAME', $db_name);
@@ -37,9 +28,9 @@ define('STATUS_PAID',      6);
 
 try {
     $pdo = new PDO(
-        "mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";charset=utf8mb4",
-        DB_USER, 
-        DB_PASS,
+        "mysql:host=" . $db_host . ";port=" . $db_port . ";dbname=" . $db_name . ";charset=utf8mb4",
+        $db_user, 
+        $db_pass,
         [
             PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
             PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
@@ -48,10 +39,10 @@ try {
     );
 } catch (PDOException $e) {
     error_log("DB failed: " . $e->getMessage());
-    die("Database connection failed. Please check your configuration.");
+    die("Database connection failed. Please check your configuration. Error: " . $e->getMessage());
 }
 
-// Rest of your functions remain the same...
+// Rest of your functions...
 function autoCompleteBookings(PDO $pdo): void {
     try {
         $pdo->query("UPDATE bookings SET status_id=".STATUS_COMPLETED."
